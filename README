@@ -1,0 +1,5 @@
+This channel exposes a package `rust-next`, which is intended to track
+a relatively recent version of rustc and cargo. It is currently at version 1.71.
+
+This project is not affiliated with GNU, with the Guix project, or with the
+Rust project or foundation.
