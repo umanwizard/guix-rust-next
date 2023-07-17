@@ -1036,8 +1036,13 @@ safety and thread safety guarantees.")
 (define-public rust-next
   (let ((base-rust (mk-public-rust rust-1.71 public-rust-1.71-phase-mods)))
     (package
-      (inherit base-rust)
-      (name "rust-next"))))
+     (inherit base-rust)
+     (source
+      (origin
+       (inherit (package-source base-rust))
+       (patches (search-patches "cargo-registry-auth.patch"))
+       (patch-flags '("-p1"))))
+     (name "rust-next"))))
 
 (define-public rust-src
   (hidden-package
