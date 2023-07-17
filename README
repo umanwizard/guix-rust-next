@@ -3,3 +3,6 @@ a relatively recent version of rustc and cargo. It is currently at version 1.71.
 
 This project is not affiliated with GNU, with the Guix project, or with the
 Rust project or foundation.
+
+The currently available version of `rust-next` is 1.71. To install, use
+`guix install rust-next rust-next:cargo`
