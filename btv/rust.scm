@@ -798,6 +798,23 @@ safety and thread safety guarantees.")
                  "vendor/rustix-0.37.7/src/backend/linux_raw/arch/outline/"
                  "vendor/rustix/src/backend/linux_raw/arch/outline/")))))))))
 
+(define rust-1.72
+  (let ((base-rust (rust-bootstrapped-package
+                    rust-1.71 "1.72.1" "15gqd1jzhnc16a7gjmav4x1v83jjbzyjh1gvcdfvpkajd9gq8j3z")))
+    (package
+     (inherit base-rust)
+     (arguments
+      (substitute-keyword-arguments
+       (package-arguments base-rust)
+       ((#:phases phases)
+        `(modify-phases
+          ,phases
+          (replace 'assemble-rustix-outline-asm
+               ,(assemble-rustix-outline-asm-phase
+                 "vendor/rustix-0.37.6/src/backend/linux_raw/arch/outline/"
+                 "vendor/rustix-0.37.11/src/backend/linux_raw/arch/outline/"
+                 "vendor/rustix-0.37.20/src/backend/linux_raw/arch/outline/")))))))))
+
 (define public-rust-1.67-phase-mods
   '((add-after 'unpack 'relax-gdb-auto-load-safe-path
       ;; Allow GDB to load binaries from any location, otherwise the
@@ -1032,6 +1049,23 @@ safety and thread safety guarantees.")
                 (substitute* "src/tools/cargo/tests/testsuite/patch.rs"
                   (("fn gitoxide_clones_shallow_old_git_patch")
                    "#[ignore]\nfn gitoxide_clones_shallow_old_git_patch")))))))
+
+
+(define public-rust-1.72-phase-mods
+  (append public-rust-1.71-phase-mods
+          '()))
+
+(define-public rust-next-1.72
+  (let ((base-rust (mk-public-rust rust-1.72 public-rust-1.72-phase-mods)))
+    (package
+     (inherit base-rust)
+     (source
+      (origin
+       (inherit (package-source base-rust))
+       (patches (search-patches "cargo-registry-auth.patch"
+                                "cargo-failed-install-test.patch"))
+       (patch-flags '("-p1"))))
+     (name "rust-next-1.72"))))
 
 (define-public rust-next
   (let ((base-rust (mk-public-rust rust-1.71 public-rust-1.71-phase-mods)))

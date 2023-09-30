@@ -1,0 +1,16 @@
+diff --git a/tests/testsuite/install.rs b/tests/testsuite/install.rs
+index 0c7fc5037..8cd6222a0 100644
+--- a/src/tools/cargo/tests/testsuite/install.rs
++++ b/src/tools/cargo/tests/testsuite/install.rs
+@@ -2276,7 +2276,9 @@ fn failed_install_retains_temp_directory() {
+ 
+     // Find the path in the output.
+     let start = stderr.find("found at `").unwrap() + 10;
+-    let end = stderr[start..].find('.').unwrap() - 1;
+-    let path = Path::new(&stderr[start..(end + start)]);
++    let end = stderr[start..].trim_end_matches(r"`.
++To reuse those artifacts with a future compilation, set the environment variable `CARGO_TARGET_DIR` to that path.
++");
++    let path = Path::new(end);
+     assert!(path.exists());
+     assert!(path.join("release/deps").exists());
