@@ -40,4 +40,7 @@ For example, if you also use `nonguix`, the full contents of your `~/.config/gui
 
 After making the change to your channels list, run `guix pull`.
 
+**NOTE**: This repository was force-pushed on 2024-10-21. If you used the channel
+before that date, you will need to run `guix pull --allow-downgrades` once.
+
 Everything is in the module `(btv rust)`.
