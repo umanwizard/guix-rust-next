@@ -43,4 +43,10 @@ After making the change to your channels list, run `guix pull`.
 **NOTE**: This repository was force-pushed on 2024-10-21. If you used the channel
 before that date, you will need to run `guix pull --allow-downgrades` once.
 
+After running `guix pull`, enter a Rust development shell as follows:
+
+```
+guix shell rust-next rust-next:tools rust-next:cargo
+```
+
 Everything is in the module `(btv rust)`.
