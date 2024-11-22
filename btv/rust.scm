@@ -129,6 +129,10 @@
           `(modify-phases ,phases
              (replace 'patch-cargo-checksums
                (lambda _
+                 ;; Beginning in rust 1.82, rust-analyzer
+                 ;; relies on the original stdlib lockfile existing, so save it
+                 ;; in order to install it later in the supported rust package.
+                 (copy-file "library/Cargo.lock" "library-pristine-cargo-lock")
                  (substitute* (cons* "Cargo.lock"
                                      "src/bootstrap/Cargo.lock"
                                      "library/Cargo.lock"
@@ -473,6 +477,8 @@
                      (dest "/lib/rustlib/src/rust"))
                  (mkdir-p (string-append out dest))
                  (copy-recursively "library" (string-append out dest "/library"))
+                 (copy-file "library-pristine-cargo-lock"
+                            (string-append out dest "/library/Cargo.lock"))
                  (copy-recursively "src" (string-append out dest "/src")))))
            (add-after 'install 'remove-uninstall-script
              (lambda* (#:key outputs #:allow-other-keys)
